@@ -9,6 +9,6 @@
 #include "doctest.h"
 
 TEST_CASE( "Can successfully create 3x3 array" ) {
-    arr = Array(3);
+    auto arr = Array(3);
     REQUIRE( arr.size() == 3 );
 }
