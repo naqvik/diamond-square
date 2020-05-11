@@ -11,4 +11,9 @@
 TEST_CASE( "Can successfully create 3x3 array" ) {
     auto arr = Array(3);
     REQUIRE( arr.size() == 3 );
+
+    SUBCASE( "Can write values and read them back" ) {
+        arr[2][2] = 127;
+        REQUIRE( arr[2][2] == 127 );
+    }
 }
