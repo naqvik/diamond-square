@@ -8,6 +8,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 
-TEST_CASE( "" ) {
-    REQUIRE( 1 == 1 );
+TEST_CASE( "Can successfully create 3x3 array" ) {
+    arr = Array(3);
+    REQUIRE( arr.size() == 3 );
 }
