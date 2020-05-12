@@ -31,12 +31,11 @@ TEST_CASE( "Must only create arrays of size 2**n+1, where n=1,2,3,..." ) {
     }
 }
 
-// TEST_CASE( "3x3 1st diamond access pattern is correct" ) {
-//     std::string expected_access_pattern =
-//         "diamond:stepsize:2\n" +
-//         "(00 02 20 22)->(11)\n";
-//     a = DiamondSquare(3);
-//     a.diamond_phase(3);
-//     a.square_phase(3);
-
-// }
+TEST_CASE( "create 3x3 spy for diamond access pattern" ) {
+    std::string expected_access_pattern =
+        "diamond:stepsize:2\n"
+        "(00 02 20 22)->(11)\n";
+    auto a = DiamondSquareSpy(3);
+    a.diamond_phase();
+    REQUIRE( a.access_pattern == expected_access_pattern );
+}
