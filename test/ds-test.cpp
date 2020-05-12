@@ -24,4 +24,8 @@ TEST_CASE( "Must only create arrays of size 2**n+1, where n=1,2,3,..." ) {
     CHECK( Array::isValidArraySize(3) == true  );  // 3 == 2**1+1
     CHECK( Array::isValidArraySize(8) == false );  // invalid
     CHECK( Array::isValidArraySize(17)== true );   // 17 = 2**4+1
+
+    SUBCASE( "Invalid array size: throws an exception" ) {
+        REQUIRE_THROWS_AS( Array(4), InvalidArraySize& );
+    }
 }
