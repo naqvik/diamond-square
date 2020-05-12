@@ -2,12 +2,50 @@
 
 #include <cstdint>
 #include <iostream>
-//#include <string>
+#include <string>
 
 #include "../src/ds.h"          // implementation
 
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
+
+
+/**
+   Subclass of DiamondSquare, overrides the algorithm to log access pattern
+
+   Rationale: the test code should instantiate this "spy" type instead
+   of the parent type, so that it can verify that the diamond phase
+   and the square phase are both accessing memory in the correct
+   pattern.  For the diamond phase the updated square depends on the
+   NW, NE, SW, SE neighbours, in that order.  For the square phase
+   the updated square depends on the N, W, E, S neighbours, in that
+   order.
+ */
+class DiamondSquareSpy : public DiamondSquare {
+public:
+    using DiamondSquare::DiamondSquare;
+
+    std::string access_pattern = "";
+
+    virtual void diamond_phase() override {
+        access_pattern += "diamond:stepsize:" + std::to_string(stepsize());
+        DiamondSquare::diamond_phase();
+    }
+    virtual void square_phase() override {
+        access_pattern += "square:";
+    }
+    virtual uint8_t &operator()(int row, int col) override {
+        access_pattern +=
+            std::to_string(row) + std::to_string(col) + " ";
+        return DiamondSquare::operator()(row,col);
+    }
+
+};
+
+bool startsWith(const std::string& str, const std::string& pattern) {
+    return pattern.length() <= str.length() &&
+        std::equal(pattern.begin(), pattern.end(), str.begin());
+}
 
 TEST_CASE( "Can successfully create 3x3 array" ) {
     auto arr = DiamondSquare(3);
@@ -37,5 +75,5 @@ TEST_CASE( "create 3x3 spy for diamond access pattern" ) {
         "(00 02 20 22)->(11)\n";
     auto a = DiamondSquareSpy(3);
     a.diamond_phase();
-    REQUIRE( a.access_pattern == expected_access_pattern );
+    REQUIRE( startsWith(a.access_pattern, "diamond:stepsize:2" ) );
 }

@@ -1,7 +1,9 @@
 // -*- c++ -*-
 // Diamond-Square Implementation
+#include <iostream>
 #include <cstdint>
 #include <memory>
+#include <string>
 
 struct InvalidArraySize {
 };
@@ -9,23 +11,26 @@ struct InvalidArraySize {
 class DiamondSquare {
 private:
     int const size_;
+    int const step_size_;
     std::unique_ptr<uint8_t[]> arr_;
 public:
     explicit DiamondSquare(int sz)
         : size_(sz),
+          step_size_(sz-1),
           arr_{std::make_unique<uint8_t[]>(size_*size_)} {
         if ( !DiamondSquare::isValidArraySize(size_) )
             throw InvalidArraySize();
     }
 
     // allow array[r][c] notation in client
-    uint8_t *operator[](int row) { return row * size_ + arr_.get(); };
+    uint8_t *operator[](int row) { return row * size_ + arr_.get(); }
 
     // allow array(r,c) notation in client
-    uint8_t &operator()(int row, int col) {
+    virtual uint8_t &operator()(int row, int col) {
         return arr_[row * size_ + col];
-    };
+    }
     int size() const { return size_; }
+    int stepsize() const { return step_size_; }
 
 private:
     /** @pre n >= 2 */
@@ -52,6 +57,10 @@ public:
         size = size - 1;
         return isPowerOfTwo(size);
     }
+    virtual void diamond_phase() {
+        (*this)(1,1) = ( (*this)(0,0) + (*this)(0,2) +
+                         (*this)(2,0) + (*this)(2,2) ) / 4;
+    }
+    virtual void square_phase() {
+    }
 };
-
-
