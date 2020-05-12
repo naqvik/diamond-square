@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <memory>
 
+struct InvalidArraySize {
+};
 
 class Array {
 private:
@@ -11,7 +13,10 @@ private:
 public:
     explicit Array(int sz)
         : size_(sz),
-          arr_{std::make_unique<uint8_t[]>(size_*size_)} {}
+          arr_{std::make_unique<uint8_t[]>(size_*size_)} {
+        if ( !Array::isValidArraySize(size_) )
+            throw InvalidArraySize();
+    }
 
     // allow array[r][c] notation in client
     uint8_t *operator[](int row) { return row * size_ + arr_.get(); };
