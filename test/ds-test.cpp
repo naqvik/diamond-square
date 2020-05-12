@@ -19,8 +19,9 @@ TEST_CASE( "Can successfully create 3x3 array" ) {
 }
 
 TEST_CASE( "Must only create arrays of size 2**n+1, where n=1,2,3,..." ) {
+    
     // Need to detect invalid array sizes, when constructing
-    CHECK( isValidArraySize(3) == true  );  // 3 == 2**1+1
-    CHECK( isValidArraySize(8) == false );  // invalid
-    CHECK( isValidArraySize(17)== true );   // 17 = 2**4+1
+    CHECK( Array::isValidArraySize(3) == true  );  // 3 == 2**1+1
+    CHECK( Array::isValidArraySize(8) == false );  // invalid
+    CHECK( Array::isValidArraySize(17)== true );   // 17 = 2**4+1
 }
