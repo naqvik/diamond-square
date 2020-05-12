@@ -1,6 +1,6 @@
 INCLUDE = $(HOME)/git/doctest/doctest
 CXX = g++-9
-CXXFLAGS = -Wall -I $(INCLUDE) -std=c++17 -Og
+CXXFLAGS = -Wall -I $(INCLUDE) -std=c++17 -Og -Wsuggest-override
 
 ds-test: ds-test.cpp ../src/ds.h
 	$(CXX) $(CXXFLAGS) -o ds-test ds-test.cpp ../src/ds.h
