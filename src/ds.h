@@ -6,15 +6,15 @@
 struct InvalidArraySize {
 };
 
-class Array {
+class DiamondSquare {
 private:
     int const size_;
     std::unique_ptr<uint8_t[]> arr_;
 public:
-    explicit Array(int sz)
+    explicit DiamondSquare(int sz)
         : size_(sz),
           arr_{std::make_unique<uint8_t[]>(size_*size_)} {
-        if ( !Array::isValidArraySize(size_) )
+        if ( !DiamondSquare::isValidArraySize(size_) )
             throw InvalidArraySize();
     }
 

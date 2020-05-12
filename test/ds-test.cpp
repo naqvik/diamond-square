@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <iostream>
+//#include <string>
 
 #include "../src/ds.h"          // implementation
 
@@ -9,7 +10,7 @@
 #include "doctest.h"
 
 TEST_CASE( "Can successfully create 3x3 array" ) {
-    auto arr = Array(3);
+    auto arr = DiamondSquare(3);
     REQUIRE( arr.size() == 3 );
 
     SUBCASE( "Can write values and read them back" ) {
@@ -21,11 +22,21 @@ TEST_CASE( "Can successfully create 3x3 array" ) {
 TEST_CASE( "Must only create arrays of size 2**n+1, where n=1,2,3,..." ) {
     
     // Need to detect invalid array sizes, when constructing
-    CHECK( Array::isValidArraySize(3) == true  );  // 3 == 2**1+1
-    CHECK( Array::isValidArraySize(8) == false );  // invalid
-    CHECK( Array::isValidArraySize(17)== true );   // 17 = 2**4+1
+    CHECK( DiamondSquare::isValidArraySize(3) == true  );  // 3 == 2**1+1
+    CHECK( DiamondSquare::isValidArraySize(8) == false );  // invalid
+    CHECK( DiamondSquare::isValidArraySize(17)== true );   // 17 = 2**4+1
 
     SUBCASE( "Invalid array size: throws an exception" ) {
-        REQUIRE_THROWS_AS( Array(4), InvalidArraySize& );
+        REQUIRE_THROWS_AS( DiamondSquare(4), InvalidArraySize& );
     }
 }
+
+// TEST_CASE( "3x3 1st diamond access pattern is correct" ) {
+//     std::string expected_access_pattern =
+//         "diamond:stepsize:2\n" +
+//         "(00 02 20 22)->(11)\n";
+//     a = DiamondSquare(3);
+//     a.diamond_phase(3);
+//     a.square_phase(3);
+
+// }
