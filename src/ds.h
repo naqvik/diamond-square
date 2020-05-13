@@ -100,7 +100,7 @@ public:
                 // find the centre
                 int rc = r+offset;
                 int cc = c+offset;
-                // calculate all source cells here
+                // calculate all neighbour source cells here
                 // NW
                 if (rc-offset >=0 && cc-offset >= 0)
                     access_pattern += std::to_string(rc-offset) +
@@ -119,8 +119,8 @@ public:
                         std::to_string(cc+offset) + " ";
 
                 access_pattern += "->"s;
-                access_pattern += "update:"s + std::to_string(r+offset)
-                    + std::to_string(c+offset);
+                access_pattern += std::to_string(r+offset) +
+                    std::to_string(c+offset);
             }
         }
 
