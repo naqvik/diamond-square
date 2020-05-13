@@ -64,3 +64,38 @@ public:
     virtual void square_phase() {
     }
 };
+
+
+
+/**
+   Subclass of DiamondSquare, overrides the algorithm to log access pattern
+
+   Rationale: the test code should instantiate this "spy" type instead
+   of the parent type, so that it can verify that the diamond phase
+   and the square phase are both accessing memory in the correct
+   pattern.  For the diamond phase the updated square depends on the
+   NW, NE, SW, SE neighbours, in that order.  For the square phase
+   the updated square depends on the N, W, E, S neighbours, in that
+   order.
+ */
+class DiamondSquareSpy : public DiamondSquare {
+public:
+    using DiamondSquare::DiamondSquare;
+
+    std::string access_pattern = "";
+
+    virtual void diamond_phase() override {
+        access_pattern += "diamond:stepsize:" +
+            std::to_string(stepsize()) + "\n";
+        DiamondSquare::diamond_phase();
+    }
+    virtual void square_phase() override {
+        access_pattern += "square:";
+    }
+    virtual uint8_t &operator()(int row, int col) override {
+        access_pattern +=
+            std::to_string(row) + std::to_string(col) + " ";
+        return DiamondSquare::operator()(row,col);
+    }
+
+};
