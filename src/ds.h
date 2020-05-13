@@ -78,6 +78,9 @@ public:
    the updated square depends on the N, W, E, S neighbours, in that
    order.
  */
+
+using namespace std::literals::string_literals;
+
 class DiamondSquareSpy : public DiamondSquare {
 public:
     using DiamondSquare::DiamondSquare;
@@ -86,7 +89,9 @@ public:
 
     virtual void diamond_phase_with_stepsize(int stepsize) override {
         access_pattern += "diamond:stepsize:" +
-            std::to_string(stepsize) + "\n" + "update:11";
+            std::to_string(stepsize) + "\n";
+
+        access_pattern += "read:00 02 20 22->update:11"s;
         DiamondSquare::diamond_phase_with_stepsize(stepsize);
     }
     virtual void square_phase_with_stepsize(int stepsize) override {
