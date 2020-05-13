@@ -2,6 +2,7 @@
 // Diamond-Square Implementation
 #include <iostream>
 #include <cstdint>
+#include <utility>              // for std::pair
 #include <vector>
 #include <memory>
 #include <string>
@@ -101,31 +102,32 @@ public:
                 // find the centre
                 int rc = r+offset;
                 int cc = c+offset;
+
+                // list of row,col coordinates
+                std::vector<std::pair<int,int>> coords;
+
                 // calculate all neighbour source cells here
                 // NW
-                std::vector<int> coords;  // list of row,col coordinates
                 if (rc-offset >=0 && cc-offset >= 0) {
-                    coords.push_back(rc-offset);
-                    coords.push_back(cc-offset);
+                    coords.push_back({rc-offset, cc-offset});
                 }
                 // NE
                 if (rc-offset >= 0 && cc+offset <= MAXDIM) {
-                    coords.push_back(rc-offset);
-                    coords.push_back(cc+offset);
+                    coords.push_back({rc-offset, cc+offset});
                 }
                 // SW
                 if (rc+offset <= MAXDIM && cc-offset >= 0) {
-                    coords.push_back(rc+offset);
-                    coords.push_back(cc-offset);
+                    coords.push_back({rc+offset, cc-offset});
                 }
                 // SE
                 if (rc+offset <= MAXDIM && cc+offset <= MAXDIM) {
-                    coords.push_back(rc+offset);
-                    coords.push_back(cc+offset);
+                    coords.push_back({rc+offset, cc+offset});
                 }
-                for (auto p=0u; p < coords.size(); p+=2) {
-                    access_pattern += std::to_string(coords[p]) +
-                        std::to_string(coords[p+1]) + " ";
+                // calculate average, store in destination
+
+                for (auto p: coords) {
+                    access_pattern += std::to_string(p.first) +
+                        std::to_string(p.second) + " ";
                 }
                 access_pattern += "->"s;
                 access_pattern += std::to_string(r+offset) +
