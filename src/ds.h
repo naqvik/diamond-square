@@ -2,6 +2,7 @@
 // Diamond-Square Implementation
 #include <iostream>
 #include <cstdint>
+#include <vector>
 #include <memory>
 #include <string>
 
@@ -102,22 +103,30 @@ public:
                 int cc = c+offset;
                 // calculate all neighbour source cells here
                 // NW
-                if (rc-offset >=0 && cc-offset >= 0)
-                    access_pattern += std::to_string(rc-offset) +
-                        std::to_string(cc-offset) + " ";
+                std::vector<int> coords;  // list of row,col coordinates
+                if (rc-offset >=0 && cc-offset >= 0) {
+                    coords.push_back(rc-offset);
+                    coords.push_back(cc-offset);
+                }
                 // NE
-                if (rc-offset >= 0 && cc+offset <= MAXDIM)
-                    access_pattern +=  std::to_string(rc-offset) +
-                        std::to_string(cc+offset) + " ";
+                if (rc-offset >= 0 && cc+offset <= MAXDIM) {
+                    coords.push_back(rc-offset);
+                    coords.push_back(cc+offset);
+                }
                 // SW
-                if (rc+offset <= MAXDIM && cc-offset >= 0)
-                    access_pattern += std::to_string(rc+offset) +
-                        std::to_string(cc-offset) + " ";
+                if (rc+offset <= MAXDIM && cc-offset >= 0) {
+                    coords.push_back(rc+offset);
+                    coords.push_back(cc-offset);
+                }
                 // SE
-                if (rc+offset <= MAXDIM && cc+offset <= MAXDIM)
-                    access_pattern += std::to_string(rc+offset) +
-                        std::to_string(cc+offset) + " ";
-
+                if (rc+offset <= MAXDIM && cc+offset <= MAXDIM) {
+                    coords.push_back(rc+offset);
+                    coords.push_back(cc+offset);
+                }
+                for (auto p=0u; p < coords.size(); p+=2) {
+                    access_pattern += std::to_string(coords[p]) +
+                        std::to_string(coords[p+1]) + " ";
+                }
                 access_pattern += "->"s;
                 access_pattern += std::to_string(r+offset) +
                     std::to_string(c+offset) + "\n";
