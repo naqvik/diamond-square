@@ -59,6 +59,7 @@ public:
     }
 
     virtual void diamond_phase_with_stepsize(int stepsize) {
+
     }
     virtual void square_phase_with_stepsize(int stepsize) {
     }
@@ -85,7 +86,7 @@ public:
 
     virtual void diamond_phase_with_stepsize(int stepsize) override {
         access_pattern += "diamond:stepsize:" +
-            std::to_string(stepsize) + "\n";
+            std::to_string(stepsize) + "\n" + "update:11";
         DiamondSquare::diamond_phase_with_stepsize(stepsize);
     }
     virtual void square_phase_with_stepsize(int stepsize) override {
