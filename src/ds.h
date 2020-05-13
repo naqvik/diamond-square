@@ -11,12 +11,14 @@ struct InvalidArraySize {
 class DiamondSquare {
 private:
     int const size_;
-    int const step_size_;
+protected:
+    int const MAXDIM;  // maximum index value (array dimension - 1)
+private:
     std::unique_ptr<uint8_t[]> arr_;
 public:
     explicit DiamondSquare(int sz)
         : size_(sz),
-          step_size_(sz-1),
+          MAXDIM(sz-1),
           arr_{std::make_unique<uint8_t[]>(size_*size_)} {
         if ( !DiamondSquare::isValidArraySize(size_) )
             throw InvalidArraySize();
@@ -30,7 +32,6 @@ public:
         return arr_[row * size_ + col];
     }
     int size() const { return size_; }
-    int stepsize() const { return step_size_; }
 
 private:
     /** @pre n >= 2 */
@@ -91,12 +92,11 @@ public:
         access_pattern += "diamond:stepsize:" +
             std::to_string(stepsize) + "\n";
 
-        const int maxdim = size()-1;
         access_pattern += "read:";
         int offset = stepsize/2;  // how far away are neighbours?
 
-        for (int r=0; r < maxdim; r += stepsize) {
-            for (int c=0; c < maxdim; c += stepsize) {
+        for (int r=0; r < MAXDIM; r += stepsize) {
+            for (int c=0; c < MAXDIM; c += stepsize) {
                 // find the centre
                 int rc = r+offset;
                 int cc = c+offset;
@@ -106,15 +106,15 @@ public:
                     access_pattern += std::to_string(rc-offset) +
                         std::to_string(cc-offset) + " ";
                 // NE
-                if (rc-offset >= 0 && cc+offset <= maxdim)
+                if (rc-offset >= 0 && cc+offset <= MAXDIM)
                     access_pattern +=  std::to_string(rc-offset) +
                         std::to_string(cc+offset) + " ";
                 // SW
-                if (rc+offset <= maxdim && cc-offset >= 0)
+                if (rc+offset <= MAXDIM && cc-offset >= 0)
                     access_pattern += std::to_string(rc+offset) +
                         std::to_string(cc-offset) + " ";
                 // SE
-                if (rc+offset <= maxdim && cc+offset <= maxdim)
+                if (rc+offset <= MAXDIM && cc+offset <= MAXDIM)
                     access_pattern += std::to_string(rc+offset) +
                         std::to_string(cc+offset) + " ";
 
