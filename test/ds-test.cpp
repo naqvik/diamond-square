@@ -39,14 +39,11 @@ TEST_CASE( "Must only create arrays of size 2**n+1, where n=1,2,3,..." ) {
 TEST_CASE( "create 3x3 spy for diamond access pattern" ) {
     using namespace std::literals::string_literals;
 
-    std::string expected_access_pattern =
-        "diamond:stepsize:2\n"
-        "(00 02 20 22)->(11)\n";
     auto a = DiamondSquareSpy(3);
-    a.diamond_phase();
+    a.diamond_phase_with_stepsize(2);
     REQUIRE(
         startsWith(a.access_pattern,
                    "diamond:stepsize:2\n"s +
-                   "00 02 20 22")
+                   "update:11")
         );
 }

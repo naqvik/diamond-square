@@ -57,11 +57,10 @@ public:
         size = size - 1;
         return isPowerOfTwo(size);
     }
-    virtual void diamond_phase() {
-        (*this)(1,1) = ( (*this)(0,0) + (*this)(0,2) +
-                         (*this)(2,0) + (*this)(2,2) ) / 4;
+
+    virtual void diamond_phase_with_stepsize(int stepsize) {
     }
-    virtual void square_phase() {
+    virtual void square_phase_with_stepsize(int stepsize) {
     }
 };
 
@@ -84,18 +83,14 @@ public:
 
     std::string access_pattern = "";
 
-    virtual void diamond_phase() override {
+    virtual void diamond_phase_with_stepsize(int stepsize) override {
         access_pattern += "diamond:stepsize:" +
-            std::to_string(stepsize()) + "\n";
-        DiamondSquare::diamond_phase();
+            std::to_string(stepsize) + "\n";
+        DiamondSquare::diamond_phase_with_stepsize(stepsize);
     }
-    virtual void square_phase() override {
-        access_pattern += "square:";
+    virtual void square_phase_with_stepsize(int stepsize) override {
+        access_pattern += "square:" +
+            std::to_string(stepsize) + "\n";
+        DiamondSquare::square_phase_with_stepsize(stepsize);
     }
-    virtual uint8_t &operator()(int row, int col) override {
-        access_pattern +=
-            std::to_string(row) + std::to_string(col) + " ";
-        return DiamondSquare::operator()(row,col);
-    }
-
 };
