@@ -99,7 +99,7 @@ public:
         return 0u;
     }
     std::vector<std::pair<int,int>>
-    make_coord_list(int r, int c, int offset) {
+    make_diamond_neighbour_list(int r, int c, int offset) {
         // list of row,col coordinates
         std::vector<std::pair<int,int>> coords;
 
@@ -107,7 +107,7 @@ public:
         int rc = r+offset;
         int cc = c+offset;
 
-        // calculate all neighbour source cell coords here
+        // calculate all diamond neighbour source cell coords here
         // NW
         if (rc-offset >=0 && cc-offset >= 0) {
             coords.push_back({rc-offset, cc-offset});
@@ -135,7 +135,7 @@ public:
 
         for (int r=0; r < MAXDIM; r += stepsize) {
             for (int c=0; c < MAXDIM; c += stepsize) {
-                auto coords = make_coord_list(r,c,offset);
+                auto coords = make_diamond_neighbour_list(r,c,offset);
 
                 // calculate average, store in destination
                 (void) calc_average(coords);
