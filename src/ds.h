@@ -90,6 +90,42 @@ public:
 
     std::string access_pattern = "";
 
+    unsigned calc_average(std::vector<std::pair<int,int>> const& coords) {
+        for (auto p: coords) {
+            access_pattern += std::to_string(p.first) +
+                std::to_string(p.second) + " ";
+        }
+
+        return 0u;
+    }
+    std::vector<std::pair<int,int>>
+    make_coord_list(int r, int c, int offset) {
+        // list of row,col coordinates
+        std::vector<std::pair<int,int>> coords;
+
+        // find the centre
+        int rc = r+offset;
+        int cc = c+offset;
+
+        // calculate all neighbour source cell coords here
+        // NW
+        if (rc-offset >=0 && cc-offset >= 0) {
+            coords.push_back({rc-offset, cc-offset});
+        }
+        // NE
+        if (rc-offset >= 0 && cc+offset <= MAXDIM) {
+            coords.push_back({rc-offset, cc+offset});
+        }
+        // SW
+        if (rc+offset <= MAXDIM && cc-offset >= 0) {
+            coords.push_back({rc+offset, cc-offset});
+        }
+        // SE
+        if (rc+offset <= MAXDIM && cc+offset <= MAXDIM) {
+            coords.push_back({rc+offset, cc+offset});
+        }
+        return coords;
+    }
     virtual void diamond_phase_with_stepsize(int stepsize) override {
         access_pattern += "diamond:stepsize:" +
             std::to_string(stepsize) + "\n";
@@ -99,36 +135,11 @@ public:
 
         for (int r=0; r < MAXDIM; r += stepsize) {
             for (int c=0; c < MAXDIM; c += stepsize) {
-                // find the centre
-                int rc = r+offset;
-                int cc = c+offset;
+                auto coords = make_coord_list(r,c,offset);
 
-                // list of row,col coordinates
-                std::vector<std::pair<int,int>> coords;
-
-                // calculate all neighbour source cells here
-                // NW
-                if (rc-offset >=0 && cc-offset >= 0) {
-                    coords.push_back({rc-offset, cc-offset});
-                }
-                // NE
-                if (rc-offset >= 0 && cc+offset <= MAXDIM) {
-                    coords.push_back({rc-offset, cc+offset});
-                }
-                // SW
-                if (rc+offset <= MAXDIM && cc-offset >= 0) {
-                    coords.push_back({rc+offset, cc-offset});
-                }
-                // SE
-                if (rc+offset <= MAXDIM && cc+offset <= MAXDIM) {
-                    coords.push_back({rc+offset, cc+offset});
-                }
                 // calculate average, store in destination
+                (void) calc_average(coords);
 
-                for (auto p: coords) {
-                    access_pattern += std::to_string(p.first) +
-                        std::to_string(p.second) + " ";
-                }
                 access_pattern += "->"s;
                 access_pattern += std::to_string(r+offset) +
                     std::to_string(c+offset) + "\n";
