@@ -93,11 +93,32 @@ public:
 
         const int maxdim = size()-1;
         access_pattern += "read:";
-        int offset = stepsize/2;
+        int offset = stepsize/2;  // how far away are neighbours?
+
         for (int r=0; r < maxdim; r += stepsize) {
             for (int c=0; c < maxdim; c += stepsize) {
+                // find the centre
+                int rc = r+offset;
+                int cc = c+offset;
                 // calculate all source cells here
-                access_pattern += "00 02 20 22->"s;
+                // NW
+                if (rc-offset >=0 && cc-offset >= 0)
+                    access_pattern += std::to_string(rc-offset) +
+                        std::to_string(cc-offset) + " ";
+                // NE
+                if (rc-offset >= 0 && cc+offset <= maxdim)
+                    access_pattern +=  std::to_string(rc-offset) +
+                        std::to_string(cc+offset) + " ";
+                // SW
+                if (rc+offset <= maxdim && cc-offset >= 0)
+                    access_pattern += std::to_string(rc+offset) +
+                        std::to_string(cc-offset) + " ";
+                // SE
+                if (rc+offset <= maxdim && cc+offset <= maxdim)
+                    access_pattern += std::to_string(rc+offset) +
+                        std::to_string(cc+offset) + " ";
+
+                access_pattern += "->"s;
                 access_pattern += "update:"s + std::to_string(r+offset)
                     + std::to_string(c+offset);
             }
