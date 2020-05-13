@@ -120,7 +120,7 @@ public:
 
                 access_pattern += "->"s;
                 access_pattern += std::to_string(r+offset) +
-                    std::to_string(c+offset);
+                    std::to_string(c+offset) + "\n";
             }
         }
 
