@@ -91,7 +91,18 @@ public:
         access_pattern += "diamond:stepsize:" +
             std::to_string(stepsize) + "\n";
 
-        access_pattern += "read:00 02 20 22->update:11"s;
+        const int maxdim = size()-1;
+        access_pattern += "read:";
+        int offset = stepsize/2;
+        for (int r=0; r < maxdim; r += stepsize) {
+            for (int c=0; c < maxdim; c += stepsize) {
+                // calculate all source cells here
+                access_pattern += "00 02 20 22->"s;
+                access_pattern += "update:"s + std::to_string(r+offset)
+                    + std::to_string(c+offset);
+            }
+        }
+
         DiamondSquare::diamond_phase_with_stepsize(stepsize);
     }
     virtual void square_phase_with_stepsize(int stepsize) override {

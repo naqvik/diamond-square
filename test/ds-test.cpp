@@ -42,9 +42,10 @@ TEST_CASE( "create 3x3 spy for diamond access pattern" ) {
     auto a = DiamondSquareSpy(3);
     SUBCASE( "di:step:2 reads and updates correct cells" ) {
         a.diamond_phase_with_stepsize(2);
-        REQUIRE( startsWith(a.access_pattern,
-                            "diamond:stepsize:2\n"
-                            "read:00 02 20 22->update:11"s) );
+//        std::cout << "ACCESS PATTERN" << a.access_pattern << "\n";
+        REQUIRE( startsWith(
+                     a.access_pattern,
+                     "diamond:stepsize:2\nread:00 02 20 22->update:11"s) );
     }
     
 }
