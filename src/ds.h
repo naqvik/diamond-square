@@ -126,6 +126,15 @@ public:
         }
         return coords;
     }
+    void update_cell(int r, int c, unsigned value) {
+        if (value > 0xffu)
+            value = 0xffu; // saturate
+        (*this)(r,c) = value;
+        
+        access_pattern += "->"s;
+        access_pattern += std::to_string(r) +
+            std::to_string(c) + "\n";
+    }
     virtual void diamond_phase_with_stepsize(int stepsize) override {
         access_pattern += "diamond:stepsize:" +
             std::to_string(stepsize) + "\n";
@@ -138,11 +147,9 @@ public:
                 auto coords = make_diamond_neighbour_list(r,c,offset);
 
                 // calculate average, store in destination
-                (void) calc_average(coords);
+                unsigned value = calc_average(coords);
 
-                access_pattern += "->"s;
-                access_pattern += std::to_string(r+offset) +
-                    std::to_string(c+offset) + "\n";
+                update_cell(r+offset, c+offset, value);
             }
         }
 
