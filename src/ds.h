@@ -103,29 +103,46 @@ public:
         // list of row,col coordinates
         std::vector<std::pair<int,int>> coords;
 
-        // find the centre
+        // find the centre, ie the coordinates of the cell to be updated
         int rc = r+offset;
         int cc = c+offset;
 
         // calculate all diamond neighbour source cell coords here
-        // NW
-        if (rc-offset >=0 && cc-offset >= 0) {
-            coords.push_back({rc-offset, cc-offset});
-        }
-        // NE
-        if (rc-offset >= 0 && cc+offset <= MAXDIM) {
-            coords.push_back({rc-offset, cc+offset});
-        }
-        // SW
-        if (rc+offset <= MAXDIM && cc-offset >= 0) {
-            coords.push_back({rc+offset, cc-offset});
-        }
-        // SE
-        if (rc+offset <= MAXDIM && cc+offset <= MAXDIM) {
-            coords.push_back({rc+offset, cc+offset});
-        }
+        if (rc-offset >=0 && cc-offset >= 0)
+            coords.push_back({rc-offset, cc-offset}); // NW
+
+        if (rc-offset >= 0 && cc+offset <= MAXDIM)
+            coords.push_back({rc-offset, cc+offset}); // NE
+
+        if (rc+offset <= MAXDIM && cc-offset >= 0)
+            coords.push_back({rc+offset, cc-offset}); // SW
+
+        if (rc+offset <= MAXDIM && cc+offset <= MAXDIM)
+            coords.push_back({rc+offset, cc+offset}); // SE
+
         return coords;
     }
+    std::vector<std::pair<int,int>>
+    make_square_neighbour_list(int r, int c, int offset) {
+        // list of row,col coordinates
+        std::vector<std::pair<int,int>> coords;
+
+        // find coordinates of cell to be updated
+        int r_u = r;
+        int c_u = c+offset;
+
+        if (r_u-offset >= 0)
+            coords.push_back({r_u-offset,c_u}); // North
+        if (c_u-offset >= 0)
+            coords.push_back({r_u, c_u-offset}); // West
+        if (c_u+offset >= MAXDIM)
+            coords.push_back({r_u, c_u+offset}); // East
+        if (r_u+offset <= MAXDIM)
+            coords.push_back({r_u+offset, c_u}); // South
+
+        return coords;
+    }
+
     void update_cell(int r, int c, unsigned value) {
         if (value > 0xffu)
             value = 0xffu; // saturate
@@ -156,8 +173,22 @@ public:
         DiamondSquare::diamond_phase_with_stepsize(stepsize);
     }
     virtual void square_phase_with_stepsize(int stepsize) override {
-        access_pattern += "square:" +
+        access_pattern += "square:stepsize:" +
             std::to_string(stepsize) + "\n";
+
+        access_pattern += "read:";
+        int offset = stepsize/2;  // how far away are neighbours?
+
+        for (int r=0; r < MAXDIM; r += stepsize) {
+            for (int c=0; c < MAXDIM; c += stepsize) {
+                auto coords = make_square_neighbour_list(r,c,offset);
+
+                // calculate average, store in destination
+                unsigned value = calc_average(coords);
+
+                update_cell(r, c+offset, value);
+            }
+        }
         DiamondSquare::square_phase_with_stepsize(stepsize);
     }
 };
