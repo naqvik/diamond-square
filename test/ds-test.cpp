@@ -36,7 +36,7 @@ TEST_CASE( "Must only create arrays of size 2**n+1, where n=1,2,3,..." ) {
     }
 }
 
-TEST_CASE( "create 3x3 spy for diamond access pattern" ) {
+TEST_CASE( "3x3 spy for diamond access pattern" ) {
     using namespace std::literals::string_literals;
 
     auto a = DiamondSquareSpy(3);
@@ -71,4 +71,21 @@ TEST_CASE( "5x5 spy for diamond access pattern" ) {
                      "22 24 42 44 ->33"
                      ) );
     }
+}
+
+TEST_CASE( "3x3 spy for square access pattern" ) {
+    using namespace std::literals::string_literals;
+
+    auto a = DiamondSquareSpy(3);
+    a.square_phase_with_stepsize(2);
+    std::cout << "ACCESS PATTERN:" << a.access_pattern << "\n";
+    REQUIRE( startsWith(
+                 a.access_pattern,
+                 "square:stepsize:2\n"
+                 // "read:00 02 11 ->01\n"
+                 // "00 11 20 ->10\n"
+                 // "02 11 22 ->12\n"
+                 ) );
+    
+
 }
