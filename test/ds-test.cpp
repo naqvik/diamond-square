@@ -83,7 +83,7 @@ TEST_CASE( "3x3 spy for square access pattern" ) {
                  a.access_pattern,
                  "square:stepsize:2\n"
                  "read:00 02 11 ->01\n"
-                 // "00 11 20 ->10\n"
+                 "00 11 20 ->10\n"
                  // "02 11 22 ->12\n"
                  ) );
     
