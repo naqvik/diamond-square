@@ -66,8 +66,8 @@ TEST_CASE( "5x5 spy for diamond access pattern" ) {
         std::cout << "ACCESS PATTERN:" << a.access_pattern << "\n";
         REQUIRE( startsWith(
                      a.access_pattern,
-                     "diamond:stepsize:2\nread:00 02 20 22 ->11\n"s// +
-                     "02 04 22 24 ->13\n" +
+                     "diamond:stepsize:2\nread:00 02 20 22 ->11\n"
+                     "02 04 22 24 ->13\n"
                      "20 22 40 42 ->31\n"
                      "22 24 42 44 ->33"
                      ) );
@@ -88,6 +88,21 @@ TEST_CASE( "3x3 spy for square access pattern" ) {
                  "02 11 22 ->12\n"
                  "11 20 22 ->21"
                  ) );
-    
+}
 
+TEST_CASE( "5x5 spy for square access pattern" ) {
+    using namespace std::literals::string_literals;
+
+    auto a = DiamondSquareSpy(5);
+    a.square_phase_with_stepsize(4);
+    INFO( "ACCESS PATTERN:"s + a.access_pattern );
+
+    REQUIRE( startsWith(
+                 a.access_pattern,
+                 "square:stepsize:4\n"
+                 "read:00 04 22 ->02\n"
+                 "00 22 40 ->20\n"
+                 "04 22 44 ->24\n"
+                 "22 40 44 ->42"
+                 ) );
 }
