@@ -84,7 +84,13 @@ public:
         return coords;
     }
 
-public:
+    virtual unsigned calc_average(Coords const& coords) {
+        unsigned sum = 0;
+        for (auto coord: coords)
+            sum += (*this)(coord.first, coord.second);
+        return sum / coords.size();
+    }
+
     static bool isValidArraySize(unsigned size) {
         // to be valid, size must be 2**n+1 for n=1,2,3,...
 
@@ -124,13 +130,13 @@ public:
 
     std::string access_pattern = "";
 
-    unsigned calc_average(Coords const& coords) {
+    unsigned calc_average(Coords const& coords) override {
         for (auto p: coords) {
             access_pattern += std::to_string(p.first) +
                 std::to_string(p.second) + " ";
         }
 
-        return 0u;
+        return DiamondSquare::calc_average(coords);
     }
     void update_cell(int r, int c, unsigned value) {
         if (value > 0xffu)
