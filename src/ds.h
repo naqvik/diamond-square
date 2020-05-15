@@ -10,6 +10,8 @@
 struct InvalidArraySize {
 };
 
+using Coords = std::vector<std::pair<int,int>>;
+
 class DiamondSquare {
 private:
     int const size_;
@@ -50,6 +52,39 @@ private:
         return false;
     }
 public:
+    Coords make_diamond_neighbour_list(int r, int c, int offset) {
+        // list of row,col coordinates
+        Coords coords;
+
+        // calculate all diamond neighbour source cell coords here
+        if (r-offset >=0 && c-offset >= 0)
+            coords.push_back({r-offset, c-offset}); // NW
+        if (r-offset >= 0 && c+offset <= MAXDIM)
+            coords.push_back({r-offset, c+offset}); // NE
+        if (r+offset <= MAXDIM && c-offset >= 0)
+            coords.push_back({r+offset, c-offset}); // SW
+        if (r+offset <= MAXDIM && c+offset <= MAXDIM)
+            coords.push_back({r+offset, c+offset}); // SE
+
+        return coords;
+    }
+    Coords make_square_neighbour_list(int r, int c, int offset) {
+        // list of row,col coordinates
+        Coords coords;
+
+        if (r-offset >= 0)
+            coords.push_back({r-offset,c}); // North
+        if (c-offset >= 0)
+            coords.push_back({r, c-offset}); // West
+        if (c+offset <= MAXDIM)
+            coords.push_back({r, c+offset}); // East
+        if (r+offset <= MAXDIM)
+            coords.push_back({r+offset, c}); // South
+
+        return coords;
+    }
+
+public:
     static bool isValidArraySize(unsigned size) {
         // to be valid, size must be 2**n+1 for n=1,2,3,...
 
@@ -83,8 +118,6 @@ public:
 
 using namespace std::literals::string_literals;
 
-using Coords = std::vector<std::pair<int,int>>;
-
 class DiamondSquareSpy : public DiamondSquare {
 public:
     using DiamondSquare::DiamondSquare;
@@ -99,38 +132,6 @@ public:
 
         return 0u;
     }
-    Coords make_diamond_neighbour_list(int r, int c, int offset) {
-        // list of row,col coordinates
-        Coords coords;
-
-        // calculate all diamond neighbour source cell coords here
-        if (r-offset >=0 && c-offset >= 0)
-            coords.push_back({r-offset, c-offset}); // NW
-        if (r-offset >= 0 && c+offset <= MAXDIM)
-            coords.push_back({r-offset, c+offset}); // NE
-        if (r+offset <= MAXDIM && c-offset >= 0)
-            coords.push_back({r+offset, c-offset}); // SW
-        if (r+offset <= MAXDIM && c+offset <= MAXDIM)
-            coords.push_back({r+offset, c+offset}); // SE
-
-        return coords;
-    }
-    Coords make_square_neighbour_list(int r, int c, int offset) {
-        // list of row,col coordinates
-        Coords coords;
-
-        if (r-offset >= 0)
-            coords.push_back({r-offset,c}); // North
-        if (c-offset >= 0)
-            coords.push_back({r, c-offset}); // West
-        if (c+offset <= MAXDIM)
-            coords.push_back({r, c+offset}); // East
-        if (r+offset <= MAXDIM)
-            coords.push_back({r+offset, c}); // South
-
-        return coords;
-    }
-
     void update_cell(int r, int c, unsigned value) {
         if (value > 0xffu)
             value = 0xffu; // saturate
