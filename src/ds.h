@@ -69,7 +69,6 @@ public:
 };
 
 
-
 /**
    Subclass of DiamondSquare, overrides the algorithm to log access pattern
 
@@ -84,13 +83,15 @@ public:
 
 using namespace std::literals::string_literals;
 
+using Coords = std::vector<std::pair<int,int>>;
+
 class DiamondSquareSpy : public DiamondSquare {
 public:
     using DiamondSquare::DiamondSquare;
 
     std::string access_pattern = "";
 
-    unsigned calc_average(std::vector<std::pair<int,int>> const& coords) {
+    unsigned calc_average(Coords const& coords) {
         for (auto p: coords) {
             access_pattern += std::to_string(p.first) +
                 std::to_string(p.second) + " ";
@@ -98,10 +99,10 @@ public:
 
         return 0u;
     }
-    std::vector<std::pair<int,int>>
+    Coords
     make_diamond_neighbour_list(int r, int c, int offset) {
         // list of row,col coordinates
-        std::vector<std::pair<int,int>> coords;
+        Coords coords;
 
         // find the centre, ie the coordinates of the cell to be updated
         int rc = r+offset;
@@ -122,10 +123,10 @@ public:
 
         return coords;
     }
-    std::vector<std::pair<int,int>>
+    Coords
     make_square_neighbour_list(int r, int c, int offset) {
         // list of row,col coordinates
-        std::vector<std::pair<int,int>> coords;
+        Coords coords;
 
         if (r-offset >= 0)
             coords.push_back({r-offset,c}); // North
@@ -179,7 +180,8 @@ public:
 
         for (int r=0; r <= MAXDIM; r += stepsize/2, row_parity ^= 1) {
             // on even parity rows, offset the columns
-            for (int c = row_parity==0 ? offset : 0; c <= MAXDIM; c += stepsize) {
+            for (int c = row_parity==0 ? offset : 0;
+                 c <= MAXDIM; c += stepsize) {
                 //std::cout << "r,c:" << r << "," << c << "\n";
                 auto coords = make_square_neighbour_list(r,c,offset);
 
