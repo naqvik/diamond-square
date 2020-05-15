@@ -99,32 +99,23 @@ public:
 
         return 0u;
     }
-    Coords
-    make_diamond_neighbour_list(int r, int c, int offset) {
+    Coords make_diamond_neighbour_list(int r, int c, int offset) {
         // list of row,col coordinates
         Coords coords;
 
-        // find the centre, ie the coordinates of the cell to be updated
-        int rc = r+offset;
-        int cc = c+offset;
-
         // calculate all diamond neighbour source cell coords here
-        if (rc-offset >=0 && cc-offset >= 0)
-            coords.push_back({rc-offset, cc-offset}); // NW
-
-        if (rc-offset >= 0 && cc+offset <= MAXDIM)
-            coords.push_back({rc-offset, cc+offset}); // NE
-
-        if (rc+offset <= MAXDIM && cc-offset >= 0)
-            coords.push_back({rc+offset, cc-offset}); // SW
-
-        if (rc+offset <= MAXDIM && cc+offset <= MAXDIM)
-            coords.push_back({rc+offset, cc+offset}); // SE
+        if (r-offset >=0 && c-offset >= 0)
+            coords.push_back({r-offset, c-offset}); // NW
+        if (r-offset >= 0 && c+offset <= MAXDIM)
+            coords.push_back({r-offset, c+offset}); // NE
+        if (r+offset <= MAXDIM && c-offset >= 0)
+            coords.push_back({r+offset, c-offset}); // SW
+        if (r+offset <= MAXDIM && c+offset <= MAXDIM)
+            coords.push_back({r+offset, c+offset}); // SE
 
         return coords;
     }
-    Coords
-    make_square_neighbour_list(int r, int c, int offset) {
+    Coords make_square_neighbour_list(int r, int c, int offset) {
         // list of row,col coordinates
         Coords coords;
 
@@ -158,7 +149,8 @@ public:
 
         for (int r=0; r < MAXDIM; r += stepsize) {
             for (int c=0; c < MAXDIM; c += stepsize) {
-                auto coords = make_diamond_neighbour_list(r,c,offset);
+                auto coords = make_diamond_neighbour_list(
+                    r+offset, c+offset, offset);
 
                 // calculate average, store in destination
                 unsigned value = calc_average(coords);
