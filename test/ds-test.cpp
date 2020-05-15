@@ -120,3 +120,15 @@ TEST_CASE( "5x5 spy for square access pattern" ) {
                      ) );
     }
 }
+
+TEST_CASE( "3x3 complete: corners 14 64 64 110 ->average 63" ) {
+    auto a = DiamondSquareSpy(3);
+
+    a(0,0) = 14;
+    a(0,2) = 64;
+    a(2,0) = 64;
+    a(2,2) = 110;
+
+    a.diamond_phase_with_stepsize(2);
+    REQUIRE( a(1,1) == 63 );
+}
