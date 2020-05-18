@@ -7,7 +7,6 @@
 #include <memory>
 #include <string>
 
-#define VIRTUAL 1
 struct InvalidArraySize {
 };
 
@@ -193,23 +192,7 @@ public:
             std::to_string(stepsize) + "\n";
 
         access_pattern += "read:";
-#if VIRTUAL
         DiamondSquare::diamond_phase_with_stepsize(stepsize);
-#else
-        int offset = stepsize/2;  // how far away are neighbours?
-
-        for (int r=0; r < MAXDIM; r += stepsize) {
-            for (int c=0; c < MAXDIM; c += stepsize) {
-                auto coords = make_diamond_neighbour_list(
-                    r+offset, c+offset, offset);
-
-                // calculate average, store in destination
-                unsigned value = calc_average(coords);
-
-                update_cell(r+offset, c+offset, value);
-            }
-        }
-#endif // VIRTUAL
     }
     virtual void square_phase_with_stepsize(int stepsize) override {
         access_pattern += "square:stepsize:" +
