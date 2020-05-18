@@ -129,7 +129,6 @@ TEST_CASE( "3x3 complete numerical example w/o randomness: " ) {
     a(2,2) = 110;
 
     SUBCASE( "di:step:2 corners 14 64 64 110 ->average 63" ) {
-
         a.diamond_phase_with_stepsize(2);
         REQUIRE( a(1,1) == 63 );
         /*  0   1   2
@@ -159,7 +158,16 @@ TEST_CASE( "3x3 complete numerical example w/o randomness: " ) {
             */
         }
     }
+    SUBCASE( "Implement 3x3 interpolation" ) {
+        a.interpolate();
+        REQUIRE( a(1,1) == 63 );
+        REQUIRE( a(0,1) == 47 );
+        REQUIRE( a(1,0) == 47 );
+        REQUIRE( a(1,2) == 79 );
+        REQUIRE( a(2,1) == 79 );
+    }
 }
+
 // use these comments for the 5x5 tests
         /*  0   1   2   3   4
           +---+---+---+---+---+
