@@ -37,6 +37,14 @@ public:
     }
     int size() const { return size_; }
 
+    void interpolate() {
+        int stepsize = size() - 1;
+        for (stepsize = size() - 1; stepsize >= 2; stepsize/=2) {
+            //std::cout << "i:stepsize:" << stepsize << std::endl;
+            diamond_phase_with_stepsize(stepsize);
+            square_phase_with_stepsize(stepsize);
+        }
+    }
 private:
     /** @pre n >= 2 */
     static bool isPowerOfTwo(unsigned n) {
