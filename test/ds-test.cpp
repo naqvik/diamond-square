@@ -179,10 +179,11 @@ void check_5x5(DiamondSquare & actual, uint8_t const expected[5][5]) {
 TEST_CASE( "5x5 complete numerical example, w/o randomness" ) {
     auto a = DiamondSquare(5);
     a(0,0) = 14;
-    a(0,4) = 64;
-    a(4,0) = 204;
-    a(4,4) = 110;
+    a(0,a.MAXDIM) = 64;
+    a(a.MAXDIM,0) = 204;
+    a(a.MAXDIM,a.MAXDIM) = 110;
     a.interpolate();
+
     uint8_t expected[5][5] = {
         { 14, 46, 58, 66, 64},
         { 62, 68, 75, 77, 77},
@@ -192,3 +193,12 @@ TEST_CASE( "5x5 complete numerical example, w/o randomness" ) {
     };
     check_5x5(a, expected);
 }
+// TEST_CASE( "9x9 complete numerical example: w/o randomness" ) {
+//     auto a = DiamondSquare(9);
+//     a(0,0) = 9;
+//     a(0,a.MAXDIM) = 67;
+//     a(a.MAXDIM,0) = 225;
+//     a(a.MAXDIM,a.MAXDIM) = 191;
+//     a.interpolate();
+    
+// }

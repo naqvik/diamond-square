@@ -15,7 +15,7 @@ using Coords = std::vector<std::pair<int,int>>;
 class DiamondSquare {
 private:
     int const size_;
-protected:
+public:
     int const MAXDIM;  // maximum index value (array dimension - 1)
 private:
     std::unique_ptr<uint8_t[]> arr_;
