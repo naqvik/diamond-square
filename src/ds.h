@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 
+#define VIRTUAL 0
 struct InvalidArraySize {
 };
 
@@ -37,12 +38,12 @@ public:
     }
     int size() const { return size_; }
 
-    void update_cell(int r, int c, unsigned value) {
+    virtual void update_cell(int r, int c, unsigned value) {
         if (value > 0xffu)
             value = 0xffu; // saturate
         (*this)(r,c) = value;
     }
-        void interpolate() {
+    void interpolate() {
         int stepsize = size() - 1;
         for (stepsize = size() - 1; stepsize >= 2; stepsize/=2) {
             //std::cout << "i:stepsize:" << stepsize << std::endl;
@@ -180,11 +181,8 @@ public:
 
         return DiamondSquare::calc_average(coords);
     }
-    void update_cell(int r, int c, unsigned value) {
-        DiamondSquare::update_cell(r,c,value);
-        if (value > 0xffu)
-            value = 0xffu; // saturate
-        (*this)(r,c) = value;
+    virtual void update_cell(int r, int c, unsigned value) override {
+        // DiamondSquare::update_cell(r,c,value);
         
         access_pattern += "->"s;
         access_pattern += std::to_string(r) +
@@ -195,6 +193,9 @@ public:
             std::to_string(stepsize) + "\n";
 
         access_pattern += "read:";
+#if VIRTUAL
+        DiamondSquare::diamond_phase_with_stepsize(stepsize);
+#else
         int offset = stepsize/2;  // how far away are neighbours?
 
         for (int r=0; r < MAXDIM; r += stepsize) {
@@ -208,8 +209,7 @@ public:
                 update_cell(r+offset, c+offset, value);
             }
         }
-
-        DiamondSquare::diamond_phase_with_stepsize(stepsize);
+#endif // VIRTUAL
     }
     virtual void square_phase_with_stepsize(int stepsize) override {
         access_pattern += "square:stepsize:" +
@@ -233,6 +233,5 @@ public:
                 update_cell(r, c, value);
             }
         }
-        DiamondSquare::square_phase_with_stepsize(stepsize);
     }
 };
