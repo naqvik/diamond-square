@@ -37,7 +37,12 @@ public:
     }
     int size() const { return size_; }
 
-    void interpolate() {
+    void update_cell(int r, int c, unsigned value) {
+        if (value > 0xffu)
+            value = 0xffu; // saturate
+        (*this)(r,c) = value;
+    }
+        void interpolate() {
         int stepsize = size() - 1;
         for (stepsize = size() - 1; stepsize >= 2; stepsize/=2) {
             //std::cout << "i:stepsize:" << stepsize << std::endl;
@@ -111,9 +116,38 @@ public:
     }
 
     virtual void diamond_phase_with_stepsize(int stepsize) {
+        int offset = stepsize/2;  // how far away are neighbours?
 
+        for (int r=0; r < MAXDIM; r += stepsize) {
+            for (int c=0; c < MAXDIM; c += stepsize) {
+                auto coords = make_diamond_neighbour_list(
+                    r+offset, c+offset, offset);
+
+                // calculate average, store in destination
+                unsigned value = calc_average(coords);
+
+                update_cell(r+offset, c+offset, value);
+            }
+        }
     }
     virtual void square_phase_with_stepsize(int stepsize) {
+        int offset = stepsize/2;  // how far away are neighbours?
+
+        int row_parity = 0; // 0=even, 1=odd
+
+        for (int r=0; r <= MAXDIM; r += stepsize/2, row_parity ^= 1) {
+            // on even parity rows, offset the columns
+            for (int c = row_parity==0 ? offset : 0;
+                 c <= MAXDIM; c += stepsize) {
+                //std::cout << "r,c:" << r << "," << c << "\n";
+                auto coords = make_square_neighbour_list(r,c,offset);
+
+                // calculate average, store in destination
+                unsigned value = calc_average(coords);
+
+                update_cell(r, c, value);
+            }
+        }
     }
 };
 
@@ -147,6 +181,7 @@ public:
         return DiamondSquare::calc_average(coords);
     }
     void update_cell(int r, int c, unsigned value) {
+        DiamondSquare::update_cell(r,c,value);
         if (value > 0xffu)
             value = 0xffu; // saturate
         (*this)(r,c) = value;
