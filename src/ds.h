@@ -7,7 +7,7 @@
 #include <memory>
 #include <string>
 
-#define VIRTUAL 0
+#define VIRTUAL 1
 struct InvalidArraySize {
 };
 
