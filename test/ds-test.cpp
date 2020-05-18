@@ -169,9 +169,10 @@ TEST_CASE( "3x3 complete numerical example w/o randomness: " ) {
 }
 
 void check_5x5(DiamondSquare & actual, uint8_t const expected[5][5]) {
-    for (int i=0; i<5; i+=2)
-        for (int j=0; j<5; j+=2) {
-            CHECK(actual(i,j) == expected[i][j]);
+    for (int i=0; i<5; i+=1)
+        for (int j=0; j<5; j+=1) {
+            INFO( "(i,j)=(" << i <<","<<j<<")" );
+            CHECK( actual(i,j) == expected[i][j] );
         }
 }
 
@@ -183,24 +184,11 @@ TEST_CASE( "5x5 complete numerical example, w/o randomness" ) {
     a(4,4) = 110;
     a.interpolate();
     uint8_t expected[5][5] = {
-        {14,0,58,0,64},
-        {0,0,0,0,0},
-        {105,0,98,0,90},
-        {0,0,0,0,0},
-        {204,0,137,0,110},
+        { 14, 46, 58, 66, 64},
+        { 62, 68, 75, 77, 77},
+        {105,101, 98, 93, 90},
+        {148,136,119,108,102},
+        {204,159,137,118,110},
     };
     check_5x5(a, expected);
-        /*  0   1   2   3   4
-          +---+---+---+---+---+
-        0 | 14| 0 | 58| 0 | 64|
-          +---+---+---+---+---+
-        1 | 0 | 0 | 0 | 0 | 0 |
-          +---+---+---+---+---+
-        2 |105| 0 | 98| 0 | 90|
-          +---+---+---+---+---+
-        3 | 0 | 0 | 0 | 0 | 0 |
-          +---+---+---+---+---+
-        4 |204| 0 |137| 0 |110|
-          +---+---+---+---+---+
-         */
 }
