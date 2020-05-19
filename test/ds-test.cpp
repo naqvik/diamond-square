@@ -165,7 +165,7 @@ TEST_CASE( "3x3 complete numerical example w/o randomness: " ) {
 }
 
 template <int sz>
-void check_array(DiamondSquare & actual, uint8_t const expected[sz][sz]) {
+void check_array(DiamondSquare & actual, element_type const expected[sz][sz]) {
     for (int i=0; i<sz; i+=1)
         for (int j=0; j<sz; j+=1) {
             INFO( "(i,j)=(" << i <<","<<j<<")" );
@@ -177,7 +177,7 @@ TEST_CASE( "5x5 complete numerical example, w/o randomness" ) {
     auto a = DiamondSquare(5, {14,64,204,110});
     a.interpolate();
 
-    uint8_t expected[5][5] = {
+    element_type expected[5][5] = {
         { 14, 46, 58, 66, 64},
         { 62, 68, 75, 77, 77},
         {105,101, 98, 93, 90},

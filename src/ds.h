@@ -23,19 +23,19 @@ private:
 public:
     int const MAXDIM;  // maximum index value (array dimension - 1)
 private:
-    std::unique_ptr<uint8_t[]> arr_;
+    std::unique_ptr<element_type[]> arr_;
 public:
     explicit DiamondSquare(int sz)
         : size_(sz),
           MAXDIM(sz-1),
-          arr_{std::make_unique<uint8_t[]>(size_*size_)} {
+          arr_{std::make_unique<element_type[]>(size_*size_)} {
         if ( !DiamondSquare::isValidArraySize(size_) )
             throw InvalidArraySize();
     }
     explicit DiamondSquare(int sz, InitialCornerValues corners)
         : size_(sz),
           MAXDIM(sz-1),
-          arr_{std::make_unique<uint8_t[]>(size_*size_)} {
+          arr_{std::make_unique<element_type[]>(size_*size_)} {
         if ( !DiamondSquare::isValidArraySize(size_) )
             throw InvalidArraySize();
         (*this)[0][0] = corners.NW;
@@ -45,10 +45,10 @@ public:
     }
 
     // allow array[r][c] notation in client
-    uint8_t *operator[](int row) { return row * size_ + arr_.get(); }
+    element_type *operator[](int row) { return row * size_ + arr_.get(); }
 
     // allow array(r,c) notation in client
-    virtual uint8_t &operator()(int row, int col) {
+    virtual element_type &operator()(int row, int col) {
         return arr_[row * size_ + col];
     }
     int size() const { return size_; }
