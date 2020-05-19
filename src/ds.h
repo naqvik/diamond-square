@@ -215,22 +215,6 @@ public:
             std::to_string(stepsize) + "\n";
 
         access_pattern += "read:";
-        int offset = stepsize/2;  // how far away are neighbours?
-
-        int row_parity = 0; // 0=even, 1=odd
-
-        for (int r=0; r <= MAXDIM; r += stepsize/2, row_parity ^= 1) {
-            // on even parity rows, offset the columns
-            for (int c = row_parity==0 ? offset : 0;
-                 c <= MAXDIM; c += stepsize) {
-                //std::cout << "r,c:" << r << "," << c << "\n";
-                auto coords = make_square_neighbour_list(r,c,offset);
-
-                // calculate average, store in destination
-                unsigned value = calc_average(coords);
-
-                update_cell(r, c, value);
-            }
-        }
+        DiamondSquare::square_phase_with_stepsize(stepsize);
     }
 };
