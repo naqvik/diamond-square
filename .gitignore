@@ -1,2 +1,6 @@
 /test/ds-test
 *~
+# ignore dir locals, because it refers specifically to
+#  /home/naqvik/git/docttest. I don't want to push this info to github.
+/.dir-locals.el
+/flycheck_.dir-locals.elc
