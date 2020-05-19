@@ -10,7 +10,7 @@
 struct InvalidArraySize {
 };
 
-using element_type = uint8_t;
+using element_type = double; //uint8_t;
 
 using Coords = std::vector<std::pair<int,int>>;
 struct InitialCornerValues {
