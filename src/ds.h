@@ -196,7 +196,7 @@ public:
 
         return DiamondSquare::calc_average(coords);
     }
-    virtual void update_cell(int r, int c, unsigned value) override {
+    virtual void update_cell(int r, int c, unsigned /*value*/) override {
         // DiamondSquare::update_cell(r,c,value);
         
         access_pattern += "->"s;
