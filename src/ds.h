@@ -10,7 +10,12 @@
 struct InvalidArraySize {
 };
 
+using element_type = uint8_t;
+
 using Coords = std::vector<std::pair<int,int>>;
+struct InitialCornerValues {
+    element_type NW, NE, SW, SE;
+};
 
 class DiamondSquare {
 private:
@@ -26,6 +31,17 @@ public:
           arr_{std::make_unique<uint8_t[]>(size_*size_)} {
         if ( !DiamondSquare::isValidArraySize(size_) )
             throw InvalidArraySize();
+    }
+    explicit DiamondSquare(int sz, InitialCornerValues corners)
+        : size_(sz),
+          MAXDIM(sz-1),
+          arr_{std::make_unique<uint8_t[]>(size_*size_)} {
+        if ( !DiamondSquare::isValidArraySize(size_) )
+            throw InvalidArraySize();
+        (*this)[0][0] = corners.NW;
+        (*this)[0][MAXDIM] = corners.NE;
+        (*this)[MAXDIM][0] = corners.SW;
+        (*this)[MAXDIM][MAXDIM] = corners.SE;
     }
 
     // allow array[r][c] notation in client

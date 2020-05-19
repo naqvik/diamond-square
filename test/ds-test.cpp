@@ -122,11 +122,7 @@ TEST_CASE( "5x5 spy for square access pattern" ) {
 }
 
 TEST_CASE( "3x3 complete numerical example w/o randomness: " ) {
-    auto a = DiamondSquare(3);
-    a(0,0) = 14;
-    a(0,2) = 64;
-    a(2,0) = 64;
-    a(2,2) = 110;
+    auto a = DiamondSquare(3, {14,64,64,110});
 
     SUBCASE( "di:step:2 corners 14 64 64 110 ->average 63" ) {
         a.diamond_phase_with_stepsize(2);
@@ -168,20 +164,17 @@ TEST_CASE( "3x3 complete numerical example w/o randomness: " ) {
     }
 }
 
-void check_5x5(DiamondSquare & actual, uint8_t const expected[5][5]) {
-    for (int i=0; i<5; i+=1)
-        for (int j=0; j<5; j+=1) {
+template <int sz>
+void check_array(DiamondSquare & actual, uint8_t const expected[5][5]) {
+    for (int i=0; i<sz; i+=1)
+        for (int j=0; j<sz; j+=1) {
             INFO( "(i,j)=(" << i <<","<<j<<")" );
             CHECK( actual(i,j) == expected[i][j] );
         }
 }
 
 TEST_CASE( "5x5 complete numerical example, w/o randomness" ) {
-    auto a = DiamondSquare(5);
-    a(0,0) = 14;
-    a(0,a.MAXDIM) = 64;
-    a(a.MAXDIM,0) = 204;
-    a(a.MAXDIM,a.MAXDIM) = 110;
+    auto a = DiamondSquare(5, {14,64,204,110});
     a.interpolate();
 
     uint8_t expected[5][5] = {
@@ -191,8 +184,9 @@ TEST_CASE( "5x5 complete numerical example, w/o randomness" ) {
         {148,136,119,108,102},
         {204,159,137,118,110},
     };
-    check_5x5(a, expected);
+    check_array<5>(a, expected);
 }
+
 // TEST_CASE( "9x9 complete numerical example: w/o randomness" ) {
 //     auto a = DiamondSquare(9);
 //     a(0,0) = 9;
@@ -200,5 +194,27 @@ TEST_CASE( "5x5 complete numerical example, w/o randomness" ) {
 //     a(a.MAXDIM,0) = 225;
 //     a(a.MAXDIM,a.MAXDIM) = 191;
 //     a.interpolate();
-    
+
+//     uint8_t expected[9][9] = {
+//         {9, 28.1888888888889, 37.65, 45.9383333333333, 49.75,
+//          58.2494444444444, 63.3666666666667, 67.8583333333333, 67},
+//         {32.5777777777778, 37.9166666666667, 45.0454166666667, 50.415,
+//          55.4641666666667, 61.6316666666667, 67.8891666666667, 73.2083333333333,
+//          76.4416666666667},
+//         {50.8166666666667, 52.635625, 54.2, 60.758125,
+//          60.06, 70.2672916666667, 73.35, 82.4916666666667, 89.1166666666667},
+//         {69.2252777777778, 67.6091666666667, 69.0841666666667, 78.3575,
+//          86.86125, 86.0275, 85.3422916666667, 94.2916666666667, 103.469444444444},
+//         {89.25, 84.67625, 76.17, 95.07125,
+//          123,	100.63875, 87.7, 106.8875, 127},
+//         {112.603055555556, 105.675833333333, 99.7508333333333, 102.7575,
+//          107.26125, 105.8275, 106.808958333333, 118.558333333333, 129.980555555556},
+//         {142.883333333333, 130.760625, 114.4, 110.195625,
+//          97.46, 110.504791666667, 115.15, 131.866666666667, 144.383333333333},
+//         {175.988888888889, 160.083333333333, 139.674583333333, 126.165,
+//          120.489166666667, 123.581666666667, 133.768333333333, 149.375, 161.586111111111},
+//         {225, 181.044444444444, 158.05, 139.655,
+//          134.75, 135.099444444444, 146.966666666667, 162.447222222222, 191},
+//     };
+//     check_array<9>(a, expected);
 // }
