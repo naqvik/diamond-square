@@ -53,7 +53,7 @@ public:
     }
     int size() const { return size_; }
 
-    virtual void update_cell(int r, int c, unsigned value) {
+    virtual void update_cell(int r, int c, element_type value) {
         if (value > 0xffu)
             value = 0xffu; // saturate
         (*this)(r,c) = value;
@@ -196,7 +196,7 @@ public:
 
         return DiamondSquare::calc_average(coords);
     }
-    virtual void update_cell(int r, int c, unsigned /*value*/) override {
+    virtual void update_cell(int r, int c, element_type /*value*/) override {
         // DiamondSquare::update_cell(r,c,value);
         
         access_pattern += "->"s;
