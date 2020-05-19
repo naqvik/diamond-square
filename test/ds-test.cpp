@@ -165,7 +165,7 @@ TEST_CASE( "3x3 complete numerical example w/o randomness: " ) {
 }
 
 template <int sz>
-void check_array(DiamondSquare & actual, uint8_t const expected[5][5]) {
+void check_array(DiamondSquare & actual, uint8_t const expected[sz][sz]) {
     for (int i=0; i<sz; i+=1)
         for (int j=0; j<sz; j+=1) {
             INFO( "(i,j)=(" << i <<","<<j<<")" );
