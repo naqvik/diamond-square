@@ -48,7 +48,7 @@ public:
     element_type *operator[](int row) { return row * size_ + arr_.get(); }
 
     // allow array(r,c) notation in client
-    virtual element_type &operator()(int row, int col) {
+    element_type &operator()(int row, int col) {
         return arr_[row * size_ + col];
     }
     int size() const { return size_; }
