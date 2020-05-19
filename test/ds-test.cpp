@@ -187,6 +187,15 @@ TEST_CASE( "5x5 complete numerical example, w/o randomness" ) {
     check_array<5>(a, expected);
 }
 
+TEST_CASE( "9x9 init with {1,1,1,1} leads to all 1's" ) {
+    auto a = DiamondSquare(9, {1,1,1,1});
+    a.interpolate();
+    for (int i=0; i < a.size(); ++i)
+        for (int j=0; j < a.size(); ++j) {
+            INFO( "a(" << i << ","<< j << ") =" << a(i,j) );
+            REQUIRE(a(i,j) == 1);
+        }
+}
 // TEST_CASE( "9x9 complete numerical example: w/o randomness" ) {
 //     auto a = DiamondSquare(9, {9, 67, 225, 191} );
 //     a.interpolate();
