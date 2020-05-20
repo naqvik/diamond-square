@@ -178,11 +178,11 @@ TEST_CASE( "5x5 complete numerical example, w/o randomness" ) {
     a.interpolate();
 
     element_type expected[5][5] = {
-        { 14, 46, 58, 66, 64},
-        { 62, 68, 75, 77, 77},
-        {105,101, 98, 93, 90},
-        {148,136,119,108,102},
-        {204,159,137,118,110},
+        { 14, 47.222222, 58.666678, 66.833333, 64},
+        { 62.777778, 69, 75.875, 77.833333, 77.5},
+        {105.333333,102.125, 98, 93.875, 90.666667},
+        {148.5,136.166667,120.125,109,103.222222},
+        {204,159.166667,137.333333,118.777778,110},
     };
     check_array<5>(a, expected);
 }
@@ -201,6 +201,7 @@ TEST_CASE( "9x9 complete numerical example: w/o randomness" ) {
     auto a = DiamondSquare(9, {9, 67, 225, 191} );
     a.interpolate();
 
+    REQUIRE(a(0,2) == doctest::Approx(51.5555556));
     // double 9x9 array created with spreadsheet
     double expected_temp[9][9] = {
         {9, 37.6018518518518, 51.5555555555556, 63.3252314814815,
