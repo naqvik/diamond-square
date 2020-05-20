@@ -20,17 +20,25 @@
      write in Python.
 
 ** Status
-   I have at this point done a bare minimum of development.  The test
-   framework is in place. One can create grids, the grid size is
-   validated, and you can read and write cells.  The remaining parts
-   are not too arduous, but they're not here yet.
+   
+   I can create an arbitrary sized array of size 2**n+1.  Tests pass
+   for 3x3, 5x5, and 9x9.  I have not yet added the random pertubations.
+
+   I'm shocked at how long it's taken me to get this far.  There's a
+   lot I have to remember/learn about c++, git, the doctest testing
+   framework.  (The first of these is the big time suck.)  I've been
+   on this for 1 week, part-time of course, and I estimate I've spent
+   25 hours.
 
    TODO:
-   - write a test spy which verifies the cell access patterns, in text
+   - [X] write a test spy which verifies the cell access patterns, in text
      mode, for both the
-     - Diamond phase and
-     - Square phase.
-   - write a test to verify the interpolation between cells
-   - write a test to verify the inclusion of random perturbations
-   - incrementally implement the rest of the functionality to pass the
+     - [X] Diamond phase and
+     - [X] Square phase.
+   - [X] write a test to verify the interpolation between cells
+   - [X] incrementally implement the rest of the functionality to pass the
      above tests
+   - [ ] write a test to verify the inclusion of random perturbations
+   - [ ] choose a reasonable graphics library so we can actually /see/
+     what the generated grid looks like
+
