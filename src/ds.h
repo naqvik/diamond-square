@@ -113,8 +113,8 @@ public:
         return coords;
     }
 
-    virtual unsigned calc_average(Coords const& coords) {
-        unsigned sum = 0;
+    virtual element_type calc_average(Coords const& coords) {
+        element_type sum = 0;
         for (auto coord: coords)
             sum += (*this)(coord.first, coord.second);
         return sum / coords.size();
@@ -140,7 +140,7 @@ public:
                     r+offset, c+offset, offset);
 
                 // calculate average, store in destination
-                unsigned value = calc_average(coords);
+                element_type value = calc_average(coords);
 
                 update_cell(r+offset, c+offset, value);
             }
@@ -159,7 +159,7 @@ public:
                 auto coords = make_square_neighbour_list(r,c,offset);
 
                 // calculate average, store in destination
-                unsigned value = calc_average(coords);
+                element_type value = calc_average(coords);
 
                 update_cell(r, c, value);
             }
@@ -188,7 +188,7 @@ public:
 
     std::string access_pattern = "";
 
-    unsigned calc_average(Coords const& coords) override {
+    element_type calc_average(Coords const& coords) override {
         for (auto p: coords) {
             access_pattern += std::to_string(p.first) +
                 std::to_string(p.second) + " ";
